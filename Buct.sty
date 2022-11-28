@@ -135,12 +135,21 @@
     BoldFont       = *-Bold,
     ItalicFont     = *-Oblique,
 ]
-\IfFontExistsTF{Source Han Sans CN}{
-    \setCJKsansfont{Source Han Sans CN}[
-        UprightFont    = *-Regular,
-        BoldFont       = *-Bold,
-    ]
-}{}
+
+\IfFontExistsTF{Source Han Sans SC}{
+	\setCJKsansfont{Source Han Sans SC}[
+		UprightFont    = *-Regular,
+		BoldFont       = *-Bold,
+	]
+}{
+	\IfFontExistsTF{Source Han Sans CN}{
+		\setCJKsansfont{Source Han Sans CN}[
+			UprightFont    = *-Regular,
+			BoldFont       = *-Bold,
+		]
+	}{}
+}
+
 \IfFontExistsTF{Sarasa Mono SC}{
     \setCJKmonofont{Sarasa Mono SC}
 }{}
@@ -149,8 +158,8 @@
 \renewcommand{\em}{\bfseries}
 
 % defs
-\def\cmd#1{\texttt{\color{red}\footnotesize \textbackslash#1}}
-\def\env#1{\texttt{\color{blue}\footnotesize #1}}
+\def\cmd#1{\texttt{\color{red}\footnotesize\textbackslash#1}}
+\def\env#1{\texttt{\color{blue}\footnotesize#1}}
 \definecolor{deepblue}  {RGB}{25, 47, 96} % 紺青
 \definecolor{deepred}   {RGB}{118, 47, 7} % 栗色
 \definecolor{deepgreen} {RGB}{0, 110, 84} % 萌葱色
