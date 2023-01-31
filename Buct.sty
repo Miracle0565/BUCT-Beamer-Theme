@@ -17,18 +17,21 @@
     hyperref,
 }
 
-\newif\ifbeamer@secheader
-\beamer@secheaderfalse
-
-%\DeclareOptionBeamer{secheader}{\beamer@secheadertrue}
 \ProcessOptionsBeamer
 
 \useoutertheme[%
-    footline = authortitle,%
-    subsection = false%
+    % 在底部导航区显示作者姓名、标题（使用短形式）
+    footline = authortitle,
+    % 抑制在顶部导航区显示小节的行
+    subsection = false
 ]{smoothbars}
+
+% 当前帧数和总帧数间的分隔符，输出在在每一帧的右下角
 \newcommand{\frameofframes}{/}
+% 可以用以下命令重新设置之
 \newcommand{\setframeofframes}[1]{\renewcommand{\frameofframes}{#1}}
+
+% 设置帧的底部导航区（footline）
 \setbeamertemplate{footline}{%
     \begin{beamercolorbox}[colsep = 1.5pt]{upper separation line foot}
     \end{beamercolorbox}
@@ -56,49 +59,66 @@
     \end{beamercolorbox}
 }
 
+% 目录、itemize 和 enumerate 的条目标记使用小圆圈。
 \useinnertheme{circles}
 
-%\useoutertheme{default}
-%\useinnertheme[shadow=true]{rounded}
-
-\xdefinecolor{buct}{RGB}{54, 68, 108}  %RGB#of buct_logo_blue
-\setbeamercolor{footline}   {bg = buct}
-\setbeamercolor{frametitle} {bg = buct, fg = white}
-\setbeamercolor{title}      {bg = buct}
+% 设置帧标题的字号
 \setbeamerfont{frametitle}{size = \large}
+
+% 抑制导航符（每一帧右下角的点击时有不同功能的小图标）
+% 一般开启（也就是把下面一行注释掉）
 %\setbeamertemplate{navigation symbols}{}
+
+% 参考文献，文中引用时以参考文献文本（比如顺序编码制下的 [2]）显示
 \setbeamertemplate{bibliography item}[text]
+
+% 图与表，在标题的前面添加数字编号
 \setbeamertemplate{caption}[numbered]
 
+% 设置常用的颜色
+% 采用校徽中的颜色作为主题色
+\xdefinecolor{buct}{RGB}{54, 68, 108}
+
+% bg（background）表示背景色， fg（foreground）表示前景色
+% 章节标题、块环境等的色彩
+\setbeamercolor{structure}  {fg = buct}
+% 底部导航区色彩
+\setbeamercolor{footline}   {bg = buct}
+% 帧标题色彩
+\setbeamercolor{frametitle} {bg = buct, fg = white}
+% 文档标题页标题色彩
+\setbeamercolor{title}      {bg = buct, fg = white}
+
+% 使用调色板（palette）来实现较为复杂的外观
+% 调色板第一色。应用于每帧的次底端（作者、机构）、标题页主标题和副标题（后面会设置）
 \setbeamercolor{palette primary}    {use = structure,   fg = white, bg = structure.fg}
+% 调色板第二色。应用于每帧的最顶端（进度导航栏）和最底端（幻灯片标题、页码）
 \setbeamercolor{palette secondary}  {use = structure,   fg = white, bg = structure.fg!75!black}
+% 调色板第三、四色。目前不起作用
 \setbeamercolor{palette tertiary}   {use = structure,   fg = white, bg = structure.fg!50!black}
 \setbeamercolor{palette quaternary} {                   fg = white, bg = structure.fg!50!black}
-%\setbeamercolor*{sidebar}{use=structure,bg=structure.fg}
+
+% 标题类继承调色板第一色
+% 包括帧标题（frame title）和副标题（subtitle），这与文档标题（document title）和副标题（subtitle）一样。
 \setbeamercolor{titlelike}          {parent = palette primary}
 
-%% try
+% 块（block）环境的颜色
+% 块标题
 \setbeamercolor{block title}{bg = buct, fg = white}
-\setbeamercolor*{block title example}{use={normal text, example text}, bg = white, fg = buct}
-\setbeamercolor{fine separation line}{}
+% 示例块标题，可使用 exampleblock 环境开启它。类似的还有提醒块 alertblock。
+\setbeamercolor*{block title example}{use = {normal text, example text}, bg = white, fg = buct}
+
+% 有序列表序号文字的颜色（不是小圆圈的颜色）
 \setbeamercolor{item projected}{fg = white}
-\setbeamercolor{palette sidebar primary}    {use = normal text, fg = normal text.fg}
-\setbeamercolor{palette sidebar quaternary} {use = structure,   fg = structure.fg}
-\setbeamercolor{palette sidebar secondary}  {use = structure,   fg = structure.fg}
-\setbeamercolor{palette sidebar tertiary}   {use = normal text, fg = normal text.fg}
-%\setbeamercolor{palette sidebar quaternary}{fg = white}
-\setbeamercolor{section in sidebar}         {fg = brown}
-\setbeamercolor{section in sidebar shaded}  {fg = grey}
-\setbeamercolor{separation line}            {}
-\setbeamercolor{sidebar}                    {bg = buct}
-\setbeamercolor{sidebar}                    {parent = palette primary}
-\setbeamercolor{structure}                  {fg = buct}
-\setbeamercolor{subsection in sidebar}      {fg = brown}
-\setbeamercolor{subsection in sidebar shaded}{fg = grey}
+
+% 每一（小）节开始时，显示目录并高亮当前部分。
 \AtBeginSection[]{
     \begin{frame}
         \tableofcontents[%
+            % show / shaded / hide
+            % 分别代表：正常显示、半透明显示、完全抑制。
             sectionstyle        = show/shaded,
+            % 抑制当前节外的所有小（小）节，当前节的当前小（小）节高亮显示
             subsectionstyle     = show/shaded/hide,
             subsubsectionstyle  = show/shaded/hide
         ]
@@ -113,29 +133,29 @@
     \end{frame}
 }
 
+% 图表标题样式
 \captionsetup{strut=off, labelsep=quad, labelfont+=bf}
+
+% 抑制 beamer 自动设置字体，以便我们自定义字体
 \usefonttheme{professionalfonts}
 
-\unimathsetup{
-    math-style = ISO,
-    bold-style = ISO,
-    mathrm     = sym,
-}
-\setmathfont{Fira Math}
-
+% 西文无衬线字体
 \setsansfont{FiraSans}[
     Extension      = .otf,
     UprightFont    = *-Regular,
     BoldFont       = *-SemiBold,
     ItalicFont     = *-Italic,
 ]
+% 西文等宽字体
 \setmonofont{FiraMono}[
     Extension      = .otf,
     UprightFont    = *-Regular,
     BoldFont       = *-Bold,
     ItalicFont     = *-Oblique,
 ]
-
+% 数学公式字体
+\setmathfont{Fira Math}
+% 中文：思源黑体，只有存在相应字体时启用
 \IfFontExistsTF{Source Han Sans SC}{
 	\setCJKsansfont{Source Han Sans SC}[
 		UprightFont    = *-Regular,
@@ -149,39 +169,49 @@
 		]
 	}{}
 }
-
+% 中文：等距更纱黑体，只有存在相应字体时启用
 \IfFontExistsTF{Sarasa Mono SC}{
     \setCJKmonofont{Sarasa Mono SC}
 }{}
 
+% 沿袭一些 BUCTthesis 的设置
+\unimathsetup{
+    math-style = ISO,
+    bold-style = ISO,
+    mathrm     = sym,
+}
 \renewcommand{\emph}{\textbf}
 \renewcommand{\em}{\bfseries}
 
-% defs
-\def\cmd#1{\texttt{\color{red}\footnotesize\textbackslash#1}}
-\def\env#1{\texttt{\color{blue}\footnotesize#1}}
-\definecolor{deepblue}  {RGB}{25, 47, 96} % 紺青
-\definecolor{deepred}   {RGB}{118, 47, 7} % 栗色
-\definecolor{deepgreen} {RGB}{0, 110, 84} % 萌葱色
-\definecolor{halfgray}  {RGB}{175, 175, 176}
-
+% 代码块部分。这里采用了自定义的配色方案。
+% 颜色名如此命名以防重复。
+\definecolor{mybrown}      {RGB}{136, 112, 115}
+\definecolor{myred}        {RGB}{255, 124, 128}
+\definecolor{mylightbrown} {RGB}{250, 213, 196}
+\definecolor{mydeepblue}   {RGB}{50, 70, 112}
+\definecolor{mygray}       {RGB}{201, 193, 197}
+\definecolor{mywhite}      {RGB}{249, 246, 243}
 \lstset{
-    basicstyle      = \ttfamily\small,
-    keywordstyle    = \bfseries\color{deepblue},
-    emphstyle       = \ttfamily\color{deepred},    % Custom highlighting style
-    stringstyle     = \color{deepgreen},
+    basicstyle      = \ttfamily\scriptsize,
+    keywordstyle    = \bfseries\color{mydeepblue},
+    emphstyle       = \ttfamily\color{myred}, 
+    stringstyle     = \color{mybrown},
+    backgroundcolor = \color{mywhite},
     numbers         = left,
-    numberstyle     = \small\color{halfgray},
-    rulesepcolor    = \color{red!20!green!20!blue!20},
-    frame           = shadowbox,
+    numberstyle     = \tiny\color{mygray},
+    tabsize         = 2,
+    breaklines      = true,
+    frame           = single,
 }
 
+% 设置 PDF 书签和超链接
 \hypersetup{%
     bookmarksnumbered  = true,
     pdfhighlight       = /N,
     breaklinks         = true,
 }
 
+% 给每一帧加上 logo 作为背景
 \setbeamertemplate{background canvas}{
     \begin{tikzpicture}
         \path (0,0) -- (\paperwidth, \paperheight);
@@ -189,6 +219,18 @@
             \includegraphics[width=11cm]{pic/BUCT-badge.pdf}
         };
     \end{tikzpicture}
+}
+
+% 重定义命令，方便使用
+\renewcommand{\maketitle}{
+    \begin{frame}
+        \titlepage
+        \begin{figure}[htpb]
+            \begin{center}
+                \includegraphics[width=0.15\linewidth]{pic/BUCT-badge.pdf}
+            \end{center}
+        \end{figure}
+    \end{frame}
 }
 
 \mode<all>
